@@ -1,9 +1,5 @@
 package user
 
-import (
-	"errors"
-)
-
 type UserModel struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
@@ -38,5 +34,3 @@ func (s *userService) UpdateUser(user *UserModel) (string, error) {
 func (s *userService) DeleteUser(id string) error {
 	return nil
 }
-
-var ErrInvalidUser = errors.New("Invalid user")

@@ -19,7 +19,12 @@ type createUserResponse struct {
 func makeCreateUserEndpoint(s UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 
-		input := request.(createUserRequest)
+		input, isValid := request.(createUserRequest)
+
+		if !isValid {
+			return nil, ErrBadRequest
+		}
+
 		ID, err := s.CreateUser(&UserModel{Name: input.Name, Email: input.Email, Password: input.Password})
 
 		return &createUserResponse{ID}, err
@@ -37,7 +42,12 @@ type getUserResponse struct {
 func makeGetUserEndpoint(s UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 
-		input := request.(getUserRequest)
+		input, isValid := request.(getUserRequest)
+
+		if !isValid {
+			return nil, ErrBadRequest
+		}
+
 		user, err := s.GetUser(input.ID)
 
 		return &getUserResponse{User: user}, err
@@ -58,7 +68,12 @@ type updateUserResponse struct {
 func makeUpdateUserEndpoint(s UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 
-		input := request.(updateUserRequest)
+		input, isValid := request.(updateUserRequest)
+
+		if !isValid {
+			return nil, ErrBadRequest
+		}
+
 		ID, err := s.UpdateUser(&UserModel{ID: input.ID, Name: input.Name, Email: input.Email, Password: input.Password})
 
 		return &updateUserResponse{ID}, err

@@ -29,13 +29,13 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	switch err {
-	case ErrInvalidUser:
+	case ErrBadRequest:
 		w.WriteHeader(http.StatusBadRequest)
 	default:
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 
-	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+	json.NewEncoder(w).Encode(map[string]interface{}{
 		"error": err.Error(),
 	})
 }
@@ -61,4 +61,3 @@ func makeHandler(s UserService) http.Handler {
 }
 
 var ErrBadRequest = errors.New("bad request")
-var ErrInvalidId = errors.New("invalid id")
