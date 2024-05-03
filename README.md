@@ -1,6 +1,7 @@
 # ScaleCommerce
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/31c40031-06a8-425b-82a8-4ff287d1d5ee/139dc0d4-26b1-4647-a92f-db2f5bf203ed/Untitled.png)
+![image](https://github.com/jpitchardu/ScaleCommerce/assets/12650088/02b26c87-56a9-4dcb-a4d3-fc71e52edb3b)
+
 
 **Objective:** Develop a highly scalable, microservices-based e-commerce platform designed to handle variable traffic efficiently using modern cloud-native technologies.
 
