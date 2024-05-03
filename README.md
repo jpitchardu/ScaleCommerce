@@ -1,5 +1,7 @@
 # ScaleCommerce
 
+*This is project with the purpose of learning*
+
 ![image](https://github.com/jpitchardu/ScaleCommerce/assets/12650088/02b26c87-56a9-4dcb-a4d3-fc71e52edb3b)
 
 
