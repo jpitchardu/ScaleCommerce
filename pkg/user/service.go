@@ -26,7 +26,6 @@ type userService struct{}
 func NewUserService() UserService { return &userService{} }
 
 func (s *userService) CreateUser(user *User) error {
-
 	return nil
 }
 
@@ -55,8 +54,9 @@ type createUserResponse struct {
 	ID string
 }
 
-func makeCreateUserEndpoint(s UserService) endpoint.Endpoint {
+func makeCreateUserEndpoint(_s UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		return nil
+		return nil, nil
 	}
+
 }
