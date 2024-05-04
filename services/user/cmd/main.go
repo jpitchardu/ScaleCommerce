@@ -26,9 +26,14 @@ func main() {
 
 	logger := log.NewLogfmtLogger(os.Stderr)
 
-	data.ConnectToDB()
+	db, err := data.ConnectToDB()
 
-	service := services.NewUserService()
+	if err != nil {
+		logger.Log("error", err)
+		os.Exit(1)
+	}
+
+	service := services.NewUserService(db)
 	service = scaleCommerceMiddleware.LoggingMiddleware{
 		Logger: logger,
 		Next:   service,
@@ -53,10 +58,10 @@ func main() {
 	}()
 
 	go func() {
-		// log.Printf("Listening on %s", httpAddr)
+		logger.Log("Listening on %s", httpAddr)
 		errs <- http.ListenAndServe(httpAddr, r)
 	}()
 
-	// log.Printf("Exiting: %s", <-errs)
+	logger.Log("Exiting: %s", <-errs)
 
 }

@@ -15,24 +15,28 @@ const (
 	dbname   = "user"
 )
 
-func ConnectToDB() {
+func ConnectToDB() (*sql.DB, error) {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
 	db, err := sql.Open("postgres", psqlInfo)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-
-	defer db.Close()
 
 	err = db.Ping()
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	fmt.Println("Successfully connected!")
+	fmt.Println("Successfully connected to database!")
 
+	return db, err
+
+}
+
+func CloseDB(db *sql.DB) {
+	db.Close()
 }

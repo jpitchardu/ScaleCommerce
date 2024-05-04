@@ -15,7 +15,7 @@ type CreateUserRequest struct {
 }
 
 type CreateUserResponse struct {
-	ID string
+	ID int64
 }
 
 func MakeCreateUserEndpoint(s services.UserService) endpoint.Endpoint {
@@ -34,7 +34,7 @@ func MakeCreateUserEndpoint(s services.UserService) endpoint.Endpoint {
 }
 
 type GetUserRequest struct {
-	ID string
+	ID int64
 }
 
 type GetUserResponse struct {
@@ -57,14 +57,14 @@ func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
 }
 
 type UpdateUserRequest struct {
-	ID       string
+	ID       int64
 	Name     string
 	Email    string
 	Password string
 }
 
 type UpdateUserResponse struct {
-	ID string
+	ID int64
 }
 
 func MakeUpdateUserEndpoint(s services.UserService) endpoint.Endpoint {

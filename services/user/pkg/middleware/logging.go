@@ -12,7 +12,7 @@ type LoggingMiddleware struct {
 	Next   services.UserService
 }
 
-func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output string, err error) {
+func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output int64, err error) {
 	defer func(begin time.Time) {
 		mv.Logger.Log(
 			"method", "CreateUser",
@@ -27,15 +27,15 @@ func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output string,
 	return
 }
 
-func (mv LoggingMiddleware) GetUser(id string) (*services.UserModel, error) {
+func (mv LoggingMiddleware) GetUser(id int64) (*services.UserModel, error) {
 
 	return nil, nil
 }
 
-func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (string, error) {
+func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (int64, error) {
 	return user.ID, nil
 }
 
-func (mv LoggingMiddleware) DeleteUser(id string) error {
+func (mv LoggingMiddleware) DeleteUser(id int64) error {
 	return nil
 }
