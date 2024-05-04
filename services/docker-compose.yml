@@ -1,24 +1,26 @@
 version: '3'
 services:
-  example:
-    build: ./golang
-    dockerfile: ./Dockerfile
-    args:
-      project: ./cmd/example
-  environment:
-    - PORT=3001
-    - APP_NAME=example
-  ports:
-    - 8001:3001
-  restart: on-failure
-  volumes:
-    - example_vol:/usr/src/example/
-  networks:
-    - example_net
+  user:
+    build: 
+      dockerfile: ./Dockerfile
+      args:
+        project: ./user
+    environment:
+      PORT: 8081
+      APP_NAME: user
+    restart: on-failure
+    volumes:
+      - type: bind
+        source: ./user/cmd
+        target: /usr/src/user
+        read_only: true
+    network_mode: host
 
 volumes:
-  example_vol:
+  user_vol:
+
 
 networks:
-  monorepo_net:
-    driver: bridge
+  default:
+    name: host
+    external: true

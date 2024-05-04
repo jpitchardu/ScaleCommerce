@@ -40,7 +40,7 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	})
 }
 
-func makeHandler(s UserService) http.Handler {
+func MakeHandler(s UserService) http.Handler {
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorEncoder(encodeError),
 	}
