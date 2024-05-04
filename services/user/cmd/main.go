@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,7 +10,10 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/jpitchardu/ScaleCommerce/pkg/user"
+	"github.com/go-kit/log"
+	scaleCommerceMiddleware "github.com/jpitchardu/ScaleCommerce/pkg/middleware"
+	"github.com/jpitchardu/ScaleCommerce/pkg/services"
+	"github.com/jpitchardu/ScaleCommerce/pkg/transport"
 )
 
 var (
@@ -20,9 +22,16 @@ var (
 )
 
 func main() {
-	service := user.NewUserService()
 
-	handler := user.MakeHandler(service)
+	logger := log.NewLogfmtLogger(os.Stderr)
+
+	service := services.NewUserService()
+	service = scaleCommerceMiddleware.LoggingMiddleware{
+		Logger: logger,
+		Next:   service,
+	}
+
+	handler := transport.MakeHandler(service)
 
 	r := chi.NewRouter()
 
@@ -41,10 +50,10 @@ func main() {
 	}()
 
 	go func() {
-		log.Printf("Listening on %s", httpAddr)
+		// log.Printf("Listening on %s", httpAddr)
 		errs <- http.ListenAndServe(httpAddr, r)
 	}()
 
-	log.Printf("Exiting: %s", <-errs)
+	// log.Printf("Exiting: %s", <-errs)
 
 }

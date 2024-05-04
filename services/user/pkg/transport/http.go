@@ -1,4 +1,4 @@
-package user
+package transport
 
 import (
 	"context"
@@ -8,10 +8,12 @@ import (
 
 	"github.com/go-chi/chi"
 	httptransport "github.com/go-kit/kit/transport/http"
+	"github.com/jpitchardu/ScaleCommerce/pkg/endpoints"
+	"github.com/jpitchardu/ScaleCommerce/pkg/services"
 )
 
 func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	var req createUserRequest
+	var req endpoints.CreateUserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return nil, ErrBadRequest
@@ -21,7 +23,7 @@ func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, e
 }
 
 func encodeCreateUserResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
-	res := response.(*createUserResponse)
+	res := response.(*endpoints.CreateUserResponse)
 	return json.NewEncoder(w).Encode(res)
 }
 
@@ -40,13 +42,14 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	})
 }
 
-func MakeHandler(s UserService) http.Handler {
+func MakeHandler(s services.UserService) http.Handler {
+
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorEncoder(encodeError),
 	}
 
 	createUserHandler := httptransport.NewServer(
-		makeCreateUserEndpoint(s),
+		endpoints.MakeCreateUserEndpoint(s),
 		decodeCreateUserRequest,
 		encodeCreateUserResponse,
 		options...,
