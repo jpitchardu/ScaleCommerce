@@ -15,14 +15,30 @@ services:
         target: /usr/src/user
         read_only: true
     network_mode: host
+    depends_on:
+      postgres:
+        condition: service_healthy
   postgres:
     image: postgres:14-alpine
-    volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=S3cre7P4ssw0rd
       - POSTGRES_USER=scale_commerce
       - POSTGRES_DB=user
+    network_mode: host
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U scale_commerce -d user -p 5432"]
+      interval: 2s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./user/db/migration:/migrations
+    command: -path=/migrations/ -database=postgres://scale_commerce:S3cre7P4ssw0rd@localhost:5432/user?sslmode=disable -verbose up
     network_mode: host
 volumes:
   user_vol:
