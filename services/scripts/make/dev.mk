@@ -14,3 +14,4 @@ stop: ## Stop docker containers
 
 clean:stop ## Stop docker containers, clean data and workspace
 	docker-compose down -v --remove-orphans
+	docker rmi services-user

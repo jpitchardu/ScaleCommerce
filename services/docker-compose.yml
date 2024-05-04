@@ -15,7 +15,15 @@ services:
         target: /usr/src/user
         read_only: true
     network_mode: host
-
+  postgres:
+    image: postgres:14-alpine
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=S3cre7P4ssw0rd
+      - POSTGRES_USER=scale_commerce
+      - POSTGRES_DB=user
+    network_mode: host
 volumes:
   user_vol:
 

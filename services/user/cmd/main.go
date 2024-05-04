@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-kit/log"
+	"github.com/jpitchardu/ScaleCommerce/pkg/data"
 	scaleCommerceMiddleware "github.com/jpitchardu/ScaleCommerce/pkg/middleware"
 	"github.com/jpitchardu/ScaleCommerce/pkg/services"
 	"github.com/jpitchardu/ScaleCommerce/pkg/transport"
@@ -24,6 +25,8 @@ var (
 func main() {
 
 	logger := log.NewLogfmtLogger(os.Stderr)
+
+	data.ConnectToDB()
 
 	service := services.NewUserService()
 	service = scaleCommerceMiddleware.LoggingMiddleware{
