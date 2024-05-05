@@ -1,6 +1,9 @@
 package services
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type UserModel struct {
 	ID       int64  `json:"id"`
@@ -31,25 +34,28 @@ func (s *userService) CreateUser(user *UserModel) (int64, error) {
 
 func (s *userService) GetUser(id int64) (*UserModel, error) {
 
-	var user *UserModel
+	var user UserModel
+
+	fmt.Println(id)
 
 	err := s.DB.QueryRow("SELECT id, name, email, password FROM users WHERE id = $1", id).Scan(&user.ID, &user.Name, &user.Email, &user.Password)
 
-	return user, err
+	fmt.Println(user)
+	return &user, err
 }
 
 func (s *userService) UpdateUser(user *UserModel) (int64, error) {
 
 	var id int64
 
-	err := s.DB.QueryRow("UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4", user.Name, user.Email, user.Password, user.ID).Scan(&id)
+	err := s.DB.QueryRow("UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING id", user.Name, user.Email, user.Password, user.ID).Scan(&id)
 
 	return id, err
 }
 
 func (s *userService) DeleteUser(id int64) error {
 
-	err := s.DB.QueryRow("DELETE FROM users WHERE id = $1", id).Err()
+	_, err := s.DB.Exec("DELETE FROM users WHERE id = $1", id)
 
 	return err
 }

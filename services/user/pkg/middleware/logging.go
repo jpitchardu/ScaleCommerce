@@ -27,15 +27,49 @@ func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output int64, 
 	return
 }
 
-func (mv LoggingMiddleware) GetUser(id int64) (*services.UserModel, error) {
+func (mv LoggingMiddleware) GetUser(id int64) (output *services.UserModel, err error) {
 
-	return nil, nil
+	defer func(begin time.Time) {
+		mv.Logger.Log(
+			"method", "GetUser",
+			"id", id,
+			"output", output,
+			"err", err,
+			"took", time.Since(begin),
+		)
+	}(time.Now())
+
+	output, err = mv.Next.GetUser(id)
+	return
 }
 
-func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (int64, error) {
-	return user.ID, nil
+func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (output int64, err error) {
+
+	defer func(begin time.Time) {
+		mv.Logger.Log(
+			"method", "UpdateUser",
+			"user", user,
+			"output", output,
+			"err", err,
+			"took", time.Since(begin),
+		)
+	}(time.Now())
+
+	output, err = mv.Next.UpdateUser(user)
+	return
 }
 
-func (mv LoggingMiddleware) DeleteUser(id int64) error {
-	return nil
+func (mv LoggingMiddleware) DeleteUser(id int64) (err error) {
+
+	defer func(begin time.Time) {
+		mv.Logger.Log(
+			"method", "DeleteUser",
+			"id", id,
+			"err", err,
+			"took", time.Since(begin),
+		)
+	}(time.Now())
+
+	err = mv.Next.DeleteUser(id)
+	return
 }

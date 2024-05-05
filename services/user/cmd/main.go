@@ -58,7 +58,7 @@ func main() {
 	}()
 
 	go func() {
-		logger.Log("Listening on %s", httpAddr)
+		logger.Log("Listening on ", httpAddr)
 		errs <- http.ListenAndServe(httpAddr, r)
 	}()
 

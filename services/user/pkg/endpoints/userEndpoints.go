@@ -3,6 +3,7 @@ package endpoints
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/jpitchardu/ScaleCommerce/pkg/services"
@@ -70,6 +71,7 @@ type UpdateUserResponse struct {
 func MakeUpdateUserEndpoint(s services.UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 
+		fmt.Println(request)
 		input, isValid := request.(UpdateUserRequest)
 
 		if !isValid {
@@ -79,6 +81,27 @@ func MakeUpdateUserEndpoint(s services.UserService) endpoint.Endpoint {
 		ID, err := s.UpdateUser(&services.UserModel{ID: input.ID, Name: input.Name, Email: input.Email, Password: input.Password})
 
 		return &UpdateUserResponse{ID}, err
+	}
+}
+
+type DeleteUserRequest struct {
+	ID int64
+}
+
+type DeleteUserResponse struct{}
+
+func MakeDeleteUserEndpoint(s services.UserService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+
+		input, isValid := request.(DeleteUserRequest)
+
+		if !isValid {
+			return nil, ErrBadRequest
+		}
+
+		err = s.DeleteUser(input.ID)
+
+		return &DeleteUserResponse{}, err
 	}
 }
 
