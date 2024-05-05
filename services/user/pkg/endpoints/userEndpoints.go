@@ -3,7 +3,6 @@ package endpoints
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/jpitchardu/ScaleCommerce/pkg/services"
@@ -39,7 +38,10 @@ type GetUserRequest struct {
 }
 
 type GetUserResponse struct {
-	User *services.UserModel
+	ID       int64
+	Name     string
+	Email    string
+	Password string
 }
 
 func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
@@ -53,7 +55,7 @@ func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
 
 		user, err := s.GetUser(input.ID)
 
-		return &GetUserResponse{User: user}, err
+		return user, err
 	}
 }
 
@@ -71,7 +73,6 @@ type UpdateUserResponse struct {
 func MakeUpdateUserEndpoint(s services.UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 
-		fmt.Println(request)
 		input, isValid := request.(UpdateUserRequest)
 
 		if !isValid {

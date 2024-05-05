@@ -2,7 +2,6 @@ package services
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type UserModel struct {
@@ -36,11 +35,8 @@ func (s *userService) GetUser(id int64) (*UserModel, error) {
 
 	var user UserModel
 
-	fmt.Println(id)
-
 	err := s.DB.QueryRow("SELECT id, name, email, password FROM users WHERE id = $1", id).Scan(&user.ID, &user.Name, &user.Email, &user.Password)
 
-	fmt.Println(user)
 	return &user, err
 }
 

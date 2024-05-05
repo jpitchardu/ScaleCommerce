@@ -46,7 +46,7 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(httpTimeout))
 
-	r.Mount("/user", handler)
+	r.Mount("/", handler)
 
 	errs := make(chan error)
 
