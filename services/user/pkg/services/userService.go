@@ -2,6 +2,8 @@ package services
 
 import (
 	"database/sql"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserModel struct {
@@ -26,7 +28,13 @@ func (s *userService) CreateUser(user *UserModel) (int64, error) {
 
 	var id int64
 
-	err := s.DB.QueryRow("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, 1) RETURNING id", user.Name, user.Email, user.Password).Scan(&id)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = s.DB.QueryRow("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, 1) RETURNING id", user.Name, user.Email, string(bytes)).Scan(&id)
 
 	return id, err
 }
@@ -44,7 +52,13 @@ func (s *userService) UpdateUser(user *UserModel) (int64, error) {
 
 	var id int64
 
-	err := s.DB.QueryRow("UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING id", user.Name, user.Email, user.Password, user.ID).Scan(&id)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = s.DB.QueryRow("UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING id", user.Name, user.Email, string(bytes), user.ID).Scan(&id)
 
 	return id, err
 }

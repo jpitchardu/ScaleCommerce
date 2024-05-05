@@ -2,19 +2,26 @@ version: '3'
 services:
   user:
     build: 
-      dockerfile: ./Dockerfile
+      dockerfile: ../Dockerfile
       args:
-        project: ./user
+        project: .
     environment:
       PORT: 8081
       APP_NAME: user
     restart: on-failure
     volumes:
       - type: bind
-        source: ./user/cmd
+        source: ./cmd
         target: /usr/src/user
         read_only: true
     network_mode: host
+    develop:
+      watch:
+        - action: rebuild 
+          paths:
+            - ./**/*.go
+            - ./go.mod
+            - ./go.sum
     depends_on:
       postgres:
         condition: service_healthy
@@ -37,7 +44,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./user/db/migration:/migrations
+      - ./db/migration:/migrations
     command: -path=/migrations/ -database=postgres://scale_commerce:S3cre7P4ssw0rd@localhost:5432/user?sslmode=disable -verbose up
     network_mode: host
 volumes:

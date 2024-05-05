@@ -1,4 +1,4 @@
-.PHONY: status logs start stop clean
+.PHONY: status logs start stop clean start-service
 
 status: ## Show status of docker containers
 	docker-compose ps
@@ -6,12 +6,16 @@ status: ## Show status of docker containers
 logs: ## Show logs of docker containers
 	docker-compose logs -f
 
-start: ## Start docker containers
-	docker-compose up -d
 
 stop: ## Stop docker containers
 	docker-compose stop
 
-clean:stop ## Stop docker containers, clean data and workspace
-	docker-compose down -v --remove-orphans
-	docker rmi services-user
+# clean:stop ## Stop docker containers, clean data and workspace
+# 	docker-compose down -v --remove-orphans
+# 	docker rmi services-user
+
+start-service:
+	docker-compose -f ./$(SERVICE)/docker-compose.yml up --build
+
+stop-service:
+	docker-compose -f ./$(SERVICE)/docker-compose.yml down

@@ -38,10 +38,9 @@ type GetUserRequest struct {
 }
 
 type GetUserResponse struct {
-	ID       int64
-	Name     string
-	Email    string
-	Password string
+	ID    int64
+	Name  string
+	Email string
 }
 
 func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
@@ -55,7 +54,7 @@ func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
 
 		user, err := s.GetUser(input.ID)
 
-		return user, err
+		return &GetUserResponse{ID: user.ID, Name: user.Name, Email: user.Email}, err
 	}
 }
 

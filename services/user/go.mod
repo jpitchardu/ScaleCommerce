@@ -17,5 +17,6 @@ require (
 	github.com/go-chi/chi v1.5.5
 	github.com/lib/pq v1.10.9
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/crypto v0.22.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
