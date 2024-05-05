@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/go-kit/kit/endpoint"
-	"github.com/jpitchardu/ScaleCommerce/pkg/services"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/services"
 )
 
 type CreateUserRequest struct {

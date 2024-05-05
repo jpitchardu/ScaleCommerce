@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/go-kit/log"
-	"github.com/jpitchardu/ScaleCommerce/pkg/services"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/services"
 )
 
 type LoggingMiddleware struct {

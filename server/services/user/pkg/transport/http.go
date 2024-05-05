@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-chi/chi"
 	httptransport "github.com/go-kit/kit/transport/http"
-	"github.com/jpitchardu/ScaleCommerce/pkg/endpoints"
-	"github.com/jpitchardu/ScaleCommerce/pkg/services"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/endpoints"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/services"
 )
 
 func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, error) {

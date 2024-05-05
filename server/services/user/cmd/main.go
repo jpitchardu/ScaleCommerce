@@ -11,10 +11,10 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-kit/log"
-	"github.com/jpitchardu/ScaleCommerce/pkg/data"
-	scaleCommerceMiddleware "github.com/jpitchardu/ScaleCommerce/pkg/middleware"
-	"github.com/jpitchardu/ScaleCommerce/pkg/services"
-	"github.com/jpitchardu/ScaleCommerce/pkg/transport"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/data"
+	scaleCommerceMiddleware "github.com/jpitchardu/ScaleCommerce/user/pkg/middleware"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/services"
+	"github.com/jpitchardu/ScaleCommerce/user/pkg/transport"
 )
 
 var (
@@ -23,6 +23,8 @@ var (
 )
 
 func main() {
+
+	fmt.Print("Testing changes")
 
 	logger := log.NewLogfmtLogger(os.Stderr)
 
