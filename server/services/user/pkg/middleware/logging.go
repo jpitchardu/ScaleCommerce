@@ -9,10 +9,10 @@ import (
 
 type LoggingMiddleware struct {
 	Logger log.Logger
-	Next   services.UserService
+	Next   services.UserModel
 }
 
-func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output int64, err error) {
+func (mv LoggingMiddleware) CreateUser(user *services.User) (output int64, err error) {
 	defer func(begin time.Time) {
 		mv.Logger.Log(
 			"method", "CreateUser",
@@ -27,8 +27,7 @@ func (mv LoggingMiddleware) CreateUser(user *services.UserModel) (output int64, 
 	return
 }
 
-func (mv LoggingMiddleware) GetUser(id int64) (output *services.UserModel, err error) {
-
+func (mv LoggingMiddleware) GetUser(id int64) (output *services.User, err error) {
 	defer func(begin time.Time) {
 		mv.Logger.Log(
 			"method", "GetUser",
@@ -43,8 +42,7 @@ func (mv LoggingMiddleware) GetUser(id int64) (output *services.UserModel, err e
 	return
 }
 
-func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (output int64, err error) {
-
+func (mv LoggingMiddleware) UpdateUser(user *services.User) (output int64, err error) {
 	defer func(begin time.Time) {
 		mv.Logger.Log(
 			"method", "UpdateUser",
@@ -60,7 +58,6 @@ func (mv LoggingMiddleware) UpdateUser(user *services.UserModel) (output int64, 
 }
 
 func (mv LoggingMiddleware) DeleteUser(id int64) (err error) {
-
 	defer func(begin time.Time) {
 		mv.Logger.Log(
 			"method", "DeleteUser",

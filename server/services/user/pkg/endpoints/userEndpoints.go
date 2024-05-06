@@ -18,16 +18,15 @@ type CreateUserResponse struct {
 	ID int64
 }
 
-func MakeCreateUserEndpoint(s services.UserService) endpoint.Endpoint {
+func MakeCreateUserEndpoint(s services.UserModel) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-
 		input, isValid := request.(CreateUserRequest)
 
 		if !isValid {
 			return nil, ErrBadRequest
 		}
 
-		ID, err := s.CreateUser(&services.UserModel{Name: input.Name, Email: input.Email, Password: input.Password})
+		ID, err := s.CreateUser(&services.User{Name: input.Name, Email: input.Email, Password: input.Password})
 
 		return &CreateUserResponse{ID}, err
 	}
@@ -43,9 +42,8 @@ type GetUserResponse struct {
 	Email string
 }
 
-func MakeGetUserEndpoint(s services.UserService) endpoint.Endpoint {
+func MakeGetUserEndpoint(s services.UserModel) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
 		input, isValid := request.(GetUserRequest)
 
 		if !isValid {
@@ -69,16 +67,15 @@ type UpdateUserResponse struct {
 	ID int64
 }
 
-func MakeUpdateUserEndpoint(s services.UserService) endpoint.Endpoint {
+func MakeUpdateUserEndpoint(s services.UserModel) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
 		input, isValid := request.(UpdateUserRequest)
 
 		if !isValid {
 			return nil, ErrBadRequest
 		}
 
-		ID, err := s.UpdateUser(&services.UserModel{ID: input.ID, Name: input.Name, Email: input.Email, Password: input.Password})
+		ID, err := s.UpdateUser(&services.User{ID: input.ID, Name: input.Name, Email: input.Email, Password: input.Password})
 
 		return &UpdateUserResponse{ID}, err
 	}
@@ -90,9 +87,8 @@ type DeleteUserRequest struct {
 
 type DeleteUserResponse struct{}
 
-func MakeDeleteUserEndpoint(s services.UserService) endpoint.Endpoint {
+func MakeDeleteUserEndpoint(s services.UserModel) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
 		input, isValid := request.(DeleteUserRequest)
 
 		if !isValid {

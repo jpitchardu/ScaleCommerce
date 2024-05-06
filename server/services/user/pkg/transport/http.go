@@ -29,9 +29,7 @@ func encodeCreateUserResponse(_ context.Context, w http.ResponseWriter, response
 }
 
 func decodeGetUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
-
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-
 	if err != nil {
 		return nil, ErrBadRequest
 	}
@@ -61,7 +59,6 @@ func encodeUpdateUserResponse(_ context.Context, w http.ResponseWriter, response
 
 func decodeDeleteUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
-
 	if err != nil {
 		return nil, ErrBadRequest
 	}
@@ -89,8 +86,7 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	})
 }
 
-func MakeHandler(s services.UserService) http.Handler {
-
+func MakeHandler(s services.UserModel) http.Handler {
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorEncoder(encodeError),
 	}
@@ -129,7 +125,6 @@ func MakeHandler(s services.UserService) http.Handler {
 		r.Get((`/{id:\d+}`), getUserHandler.ServeHTTP)
 		r.Put((`/{id:\d+}`), updateUserHandler.ServeHTTP)
 		r.Delete((`/{id:\d+}`), deleteUserHandler.ServeHTTP)
-
 	})
 
 	return r
