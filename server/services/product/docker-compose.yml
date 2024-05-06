@@ -1,0 +1,60 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_PASSWORD=S3cre7P4ssw0rd
+      - POSTGRES_USER=scale_commerce
+      - POSTGRES_DB=product
+    network_mode: host
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U scale_commerce -d product -p 5432"]
+      interval: 2s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./db/migration:/migrations
+    command: -path=/migrations/ -database=postgres://scale_commerce:S3cre7P4ssw0rd@localhost:5432/product?sslmode=disable -verbose up
+    network_mode: host
+  product:
+    build: 
+      dockerfile: ../../Dockerfile
+      args:
+        project: .
+    environment:
+      PORT: 8081
+      APP_NAME: product
+    restart: on-failure
+    volumes:
+      - type: bind
+        source: ./cmd 
+        target: /usr/src/product
+        read_only: true
+    network_mode: host
+    develop:
+      watch:
+        - path: ./cmd
+          action: rebuild
+        - path: ./pkg
+          action: rebuild
+        - path: ./go.mod
+          action: rebuild
+        - path: ./go.sum 
+          action: rebuild
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
+  product_vol:
+
+
+networks:
+  default:
+    name: host
+    external: true

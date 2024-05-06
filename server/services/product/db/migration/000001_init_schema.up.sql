@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS "products"(
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
+  "desciprion" TEXT NOT NULL,
+  "price" DECIMAL(10, 2) NOT NULL,
+  "category" VARCHAR(255) NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS "product_images"(
+  "id" SERIAL PRIMARY KEY,
+  "product_id" INTEGER NOT NULL,
+  "url" TEXT NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS "product_inventories"(
+  "id" SERIAL PRIMARY KEY,
+  "product_id" INTEGER NOT NULL,
+  "quantity" INTEGER NOT NULL,
+  "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE "product_images"
+ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "product_inventories"
+ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+CREATE INDEX ON "products" ("name");
